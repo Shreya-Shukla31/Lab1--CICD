@@ -25,7 +25,7 @@ jobs:
             echo "No requirements.txt found, skipping."
           fi
 
-      # Run tests using pytest
+      # Run tests using pytest if any test_*.py files exist
       - name: Run tests
         run: |
           if ls test_*.py 1> /dev/null 2>&1; then
@@ -41,7 +41,7 @@ jobs:
       # Checkout the repository
       - uses: actions/checkout@v4
 
-      # Login to DockerHub
+      # Login to DockerHub using the access token
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -52,6 +52,6 @@ jobs:
       - name: Build and Push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: 
+          context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/lab1-cicd:latest
